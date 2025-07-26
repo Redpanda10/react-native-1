@@ -1,0 +1,94 @@
+// In App.js in a new project
+
+import * as React from 'react';
+import { View, Text, Button, TextInput } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function HomeScreen({ route }) {
+  const navigation = useNavigation();
+
+  React.useEffect(() => {
+    if (route.params?.post) {
+      alert('New post: ' + route.params.post);
+    }
+  }, [route.params?.post]);
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        title="Create Post"
+        onPress={() => navigation.navigate('CreatePost')}
+      />
+      <Text style={{ margin: 10 }}>Post: {route.params?.post}</Text>
+    </View>
+  );
+}
+
+function DetailsScreen({ route }) {
+  const navigation = useNavigation();
+  const { itemId, name } = route.params || {};
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Text>itemId: {JSON.stringify(itemId)}</Text>
+      <Text>name: {JSON.stringify(name)}</Text>
+
+      <Button
+        title="Go to Detail"
+        onPress={() =>
+          navigation.push('Detail', {
+            itemId: Math.floor(Math.random() * 100),
+            name: 'Random User',
+          })
+        }
+      />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+      <Button title="Go back to first screen" onPress={() => navigation.popToTop()} />
+    </View>
+  );
+}
+
+function CreatePostScreen() {
+  const navigation = useNavigation();
+  const [postText, setPostText] = React.useState('');
+
+  return (
+    <View style={{ flex: 1, padding: 20, backgroundColor: '#f8f8f8' }}>
+      <TextInput
+        multiline
+        placeholder="What's on your mind?"
+        style={{
+          height: 200,
+          padding: 10,
+          backgroundColor: 'white',
+          marginBottom: 20,
+          borderRadius: 8,
+        }}
+        value={postText}
+        onChangeText={setPostText}
+      />
+      <Button
+        title="Done"
+        onPress={() => {
+          navigation.navigate('Home', { post: postText });
+        }}
+      />
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Detail" component={DetailsScreen} />
+        <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
