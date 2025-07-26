@@ -1,0 +1,28 @@
+function DetailsScreen({route}) {
+  const navigation = useNavigation();
+
+  const { itemId, name } = route.params;
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Text>itemId:{JSON.stringify(itemId)}</Text>
+      <Text>name:{JSON.stringify(name)}</Text>
+
+      <Button
+        onPress={
+          () =>
+            navigation.push('Detail', {
+              itemId: Math.floor(Math.random() * 100),
+            })
+        }
+        title="Go to Detail"
+      />
+
+
+
+      <Button title="Go back" onPress={() => navigation.goBack()}/>
+      <Button title=" Go back to first screen in stack" onPress={() => navigation.popToTop()}/>
+    </View>
+  );
+}
