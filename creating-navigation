@@ -28,3 +28,12 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+
+
+
+
+
+//npm install @react-navigation/native-stack
+//npm install @react-navigation/elements
+
